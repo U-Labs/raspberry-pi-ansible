@@ -1,0 +1,34 @@
+- name: Docker auf dem Raspberry Pi OS installieren
+  hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    install_script: /tmp/install-docker.sh
+    docker_permitted_user: "{{ ansible_user_id }}"
+
+  tasks:
+    - name: Pruefen, ob Docker installiert ist
+      shell: docker --version
+      register: docker_check
+      failed_when: False
+      changed_when: False
+
+    - set_fact:
+        docker_missing: "{{ docker_check.rc != 0 }}"
+
+    - name: Installationsskript herunterladen
+      get_url:
+        url: https://get.docker.com
+        dest: "{{ install_script }}"
+        mode: '0550'
+      when: docker_missing
+
+    - name: Docker installieren
+      shell: "{{ install_script }}"
+      when: docker_missing
+    
+    - name: "{{ docker_permitted_user}} zur Docker-Berechtigungsgruppe hinzufuegen"
+      become: yes
+      user:
+        name: "{{ docker_permitted_user }}"
+        groups: docker
+        append: yes
