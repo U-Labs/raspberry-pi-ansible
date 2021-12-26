@@ -66,4 +66,4 @@ testpi                     : ok=4    changed=0    unreachable=0    failed=0    s
 Auf dem Pi kann man sich nun einloggen und die installierten Komponenten (hier im Beispiel Docker) nutzen.
 
 ## Verfügbare Playbooks
-- [./dokus/19.md](#19: Apache2 mit PHP und MariaDB für eine MySQL-Datenbank)
+- [#19: Apache2 mit PHP und MariaDB für eine MySQL-Datenbank](/dokus/19.md)
