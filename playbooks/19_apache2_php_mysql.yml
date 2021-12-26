@@ -1,0 +1,31 @@
+- name: Apache mit PHP auf dem Raspberry Pi OS installieren
+  hosts: all
+  vars:
+    html_dir_owner_user: "{{ ansible_user_id }}"
+    html_dir_owner_group: www-data
+
+  tasks:    
+    - name: Apache2 & MariaDB installieren
+      become: yes
+      apt:
+        name: 
+          - apache2
+          - php
+          - php-mysql 
+          - php-mbstring
+          - mariadb-server
+
+    - name: Pi-User auf HTML Ordner berechtigen
+      become: yes
+      file:
+        path: /var/www/html
+        mode: 0750
+        owner: "{{ html_dir_owner_user }}"
+        group: "{{ html_dir_owner_group }}"
+        state: directory
+        recurse: yes
+
+    - name: PHP-Info in i.php anlegen
+      copy:
+        dest: /var/www/html/i.php
+        content: "<?php phpinfo();"
