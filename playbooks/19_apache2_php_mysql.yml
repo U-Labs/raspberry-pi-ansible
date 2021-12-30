@@ -5,14 +5,24 @@
     html_dir_owner_group: www-data
 
   tasks:    
-    - name: Apache2 & MariaDB installieren
+    - name: Apache2 installieren
       become: yes
       apt:
         name: 
           - apache2
+
+    - name: PHP installieren
+      become: yes
+      apt:
+        name: 
           - php
           - php-mysql 
           - php-mbstring
+
+    - name: MariaDB als MySQL-Server installieren
+      become: yes
+      apt:
+        name: 
           - mariadb-server
 
     - name: Pi-User auf HTML Ordner berechtigen
